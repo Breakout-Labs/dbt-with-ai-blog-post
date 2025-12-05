@@ -1,11 +1,12 @@
 version: 2
 
 models:
-  - name: int_marketing_customer_order_stats_aggregated
+  - name: int_marketing__customer_order_stats_aggregated
     description: This model aggregates customer order statistics. Intermediate model, not materialized to data warehouse.
     data_tests:
       - dbt_utils.expression_is_true:
-          expression: "orders_total = orders_ordered + orders_pending + orders_cancelled + orders_delivered"
+          arguments:
+            expression: "orders_total = orders_ordered + orders_pending + orders_cancelled + orders_delivered"
 
     columns:
       - name: customer_id
