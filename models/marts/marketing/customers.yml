@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: customers
+    description: >
+      Core customer dimension table enriched with order metrics and survey data.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "first_order_at <= most_recent_order_at"
+          config:
+            where: "first_order_at is not null and most_recent_order_at is not null"
+            severity: error
+
+    columns:
+      - name: customer_id
+        description: Unique identifier for the customer. Primary key.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: Customer's first name
+        data_tests:
+          - not_null
+
+      - name: last_name
+        description: Customer's last name
+        data_tests:
+          - not_null
+
+      - name: email
+        description: Customer's email address
+        data_tests:
+          - not_null
+
+      - name: address
+        description: Customer's address
+        data_tests:
+          - not_null
+
+      - name: phone_number
+        description: Customer's phone number
+        data_tests:
+          - not_null
+
+      - name: satisfaction_score
+        description: Customer satisfaction score from survey responses
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 5
+              config:
+                where: "satisfaction_score is not null"
+                severity: warn
+
+      - name: count_orders
+        description: Total number of orders placed by the customer. Defaults to 0 for customers with no orders.
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: average_delivery_time_from_collection
+        description: Average delivery time in minutes from pickup to delivery across all orders
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "average_delivery_time_from_collection is not null"
+
+      - name: average_delivery_time_from_order
+        description: Average delivery time in minutes from order placement to delivery across all orders
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "average_delivery_time_from_order is not null"
+
+      - name: count_orders_last_30_days
+        description: Number of orders placed in the last 30 days
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "count_orders_last_30_days is not null"
+
+      - name: count_orders_last_90_days
+        description: Number of orders placed in the last 90 days
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "count_orders_last_90_days is not null"
+
+      - name: count_orders_last_360_days
+        description: Number of orders placed in the last 360 days
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "count_orders_last_360_days is not null"
+
+      - name: survey_date
+        description: Time of survey for customer satisfaction score  
+
+      - name: survey_date
+        description: Time of creation for customer record
+
+      - name: first_order_at
+        description: Timestamp of the customer's first order in UTC
+
+      - name: most_recent_order_at
+        description: Timestamp of the customer's most recent order in UTC

@@ -1,0 +1,21 @@
+models:
+  - name: stg_ecomm__customers
+    description: This model serves as a staging layer for customer data.
+    columns:
+    - name: customer_id
+      description: The unique ID of the customer.
+      tests:
+        - not_null
+        - unique
+    - name: first_name
+      description: The first name of the customer.
+    - name: last_name
+      description: The last name of the customer.
+    - name: email
+      description: The email address of the customer.
+    - name: address
+      description: The physical address of the customer.
+    - name: phone_number
+      description: The contact phone number of the customer.
+    - name: created_at
+      description: The timestamp when the customer record was created.

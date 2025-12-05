@@ -1,0 +1,19 @@
+models:
+  - name: stg_ecomm__deliveries
+    description: This model serves as a staging layer for delivery data.
+    columns:
+    - name: delivery_id
+      description: A unique identifier for each delivery.
+      tests:
+        - not_null
+        - unique
+    - name: order_id
+      description: The identifier for the order associated with the delivery.
+    - name: delivery_status
+      description: The current status of the delivery, indicating its progress.
+    - name: picked_up_at
+      description: The timestamp when the delivery was picked up.
+    - name: delivered_at
+      description: The timestamp when the delivery was completed.
+    - name: _synced_at
+      description: The timestamp when the delivery data was last synchronized.

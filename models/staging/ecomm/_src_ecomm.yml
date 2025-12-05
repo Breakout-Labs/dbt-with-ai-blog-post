@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: ecomm
+    database: raw
+    tables:
+      - name: customers
+        description: Each record in this table represents a customer in our ecommerce application.
+      - name: orders
+        identifier: orders_us
+        description: Each record in this table represents an order in our ecommerce application.
+      - name: deliveries
+        description: Each record in this table represents an order delivery in our ecommerce application.
+      - name: order_lines
+        description: Each record in this table represents an order line for a specific order
+      - name: products
+        description: Each record in this table represents a product and its characteristics

@@ -1,0 +1,19 @@
+models:
+  - name: stg_sheets__customer_survey_responses
+    description: This model processes customer survey responses, generating a unique identifier for each response and transforming the survey date into a standard format. It is used to analyze customer feedback and satisfaction scores over time.
+    columns:
+      - name: customer_survey_id
+        description: A unique identifier for each customer survey response, generated from the customer email and survey date.
+        data_tests:
+          - unique:
+              config:
+                where: "survey_date is not null"
+          - not_null
+      - name: customer_email
+        description: The email address of the customer who provided the survey response.
+      - name: feedback
+        description: The feedback provided by the customer in the survey.
+      - name: satisfaction_score
+        description: A numerical score representing the customer's satisfaction level.
+      - name: survey_date
+        description: The date when the survey was completed, formatted as a date.

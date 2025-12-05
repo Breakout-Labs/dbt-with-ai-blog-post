@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: deliveries
+    description: >
+      Customer-level delivery metrics aggregated from order and delivery data. 
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "total_delivery_count <= total_order_count"
+          config:
+            severity: error
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "last_delivered_at is null or successful_delivery_count > 0"
+          config:
+            severity: error
+            
+    columns:
+      - name: customer_id
+        description: Unique identifier for the customer. Primary key.
+        data_tests:
+          - unique
+          - not_null
+                
+      - name: total_order_count
+        description: Total number of orders placed by the customer
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: total_delivery_count
+        description: Total number of deliveries associated with the customer
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: successful_delivery_count
+        description: Number of successfully delivered orders
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: failed_delivery_count
+        description: Number of cancelled or failed deliveries
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: last_delivered_at
+        description: Timestamp of the customer's most recent delivery in UTC

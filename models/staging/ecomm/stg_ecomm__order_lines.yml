@@ -1,0 +1,21 @@
+models:
+  - name: stg_ecomm__order_lines
+    description: This model serves as a staging layer for order line data. Each order includes one or more order lines.
+    columns:
+      - name: order_line_id
+        description: A unique identifier for each order line item.
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: The identifier for the order that this line item belongs to.
+      - name: product_id
+        description: The identifier for the product in this line item.
+      - name: quantity
+        description: The number of units of the product ordered.
+      - name: unit_price
+        description: The price per unit of the product at the time of order.
+      - name: line_total
+        description: The total price for this line item (quantity x unit_price).
+      - name: _synced_at
+        description: The timestamp when the order line data was last synchronized.

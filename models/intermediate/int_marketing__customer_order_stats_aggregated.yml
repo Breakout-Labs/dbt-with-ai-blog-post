@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: int_marketing_customer_order_stats_aggregated
+    description: This model aggregates customer order statistics. Intermediate model, not materialized to data warehouse.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "orders_total = orders_ordered + orders_pending + orders_cancelled + orders_delivered"
+
+    columns:
+      - name: customer_id
+        description: A unique id for each customer.
+        tests:
+          - not_null
+          - unique
+
+      - name: orders_ordered
+        description: The total number of orders currently marked as 'ordered' for each customer.
+
+      - name: orders_pending
+        description: The total number of orders that are currently pending for the customer.
+
+      - name: orders_cancelled
+        description: The total number of orders that have been cancelled by the customer.
+
+      - name: orders_delivered
+        description: The total number of orders that have been delivered to the customer.
+
+      - name: orders_total
+        description: The total number of orders associated with the customer.
+
+      - name: average_order_amount
+        description: The average amount spent per order by the customer, rounded to two decimal places.
