@@ -4,6 +4,8 @@
 name: 'dbt_with_ai_blog_post'
 version: '1.0.0'
 config-version: 2
+dbt-cloud:
+    project-id: 477095
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'default'
