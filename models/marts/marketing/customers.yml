@@ -8,9 +8,9 @@ models:
       - dbt_utils.expression_is_true:
           arguments:
             expression: "first_order_at <= most_recent_order_at"
-          config:
-            where: "first_order_at is not null and most_recent_order_at is not null"
-            severity: error
+            config:
+              where: "first_order_at is not null and most_recent_order_at is not null"
+              severity: error
 
     columns:
       - name: customer_id
@@ -51,9 +51,9 @@ models:
               arguments:
                 min_value: 1
                 max_value: 5
-              config:
-                where: "satisfaction_score is not null"
-                severity: warn
+                config:
+                  where: "satisfaction_score is not null"
+                  severity: warn
 
       - name: count_orders
         description: Total number of orders placed by the customer. Defaults to 0 for customers with no orders.

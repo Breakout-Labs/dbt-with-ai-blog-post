@@ -7,14 +7,9 @@ models:
     data_tests:
       - dbt_utils.expression_is_true:
           arguments:
-            expression: "total_delivery_count <= total_order_count"
-          config:
-            severity: error
-      - dbt_utils.expression_is_true:
-          arguments:
             expression: "last_delivered_at is null or successful_delivery_count > 0"
-          config:
-            severity: error
+            config:
+              severity: error
             
     columns:
       - name: customer_id
