@@ -8,7 +8,7 @@ with orders as (
     select
       orders.order_id,
       orders.customer_id,
-      orders.ordered_at
+      orders.ordered_at,
       orders.order_status,
       orders.total_amount,
     from orders
