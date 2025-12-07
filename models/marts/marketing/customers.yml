@@ -63,24 +63,6 @@ models:
               arguments:
                 min_value: 0
 
-      - name: average_delivery_time_from_collection
-        description: Average delivery time in minutes from pickup to delivery across all orders
-        data_tests:
-          - dbt_utils.accepted_range:
-              arguments:
-                min_value: 0
-              config:
-                where: "average_delivery_time_from_collection is not null"
-
-      - name: average_delivery_time_from_order
-        description: Average delivery time in minutes from order placement to delivery across all orders
-        data_tests:
-          - dbt_utils.accepted_range:
-              arguments:
-                min_value: 0
-              config:
-                where: "average_delivery_time_from_order is not null"
-
       - name: count_orders_last_30_days
         description: Number of orders placed in the last 30 days
         data_tests:

@@ -20,8 +20,6 @@ customer_metrics as (
     select
         customer_id,
         count(*) as count_orders,
-        round(avg(delivery_time_from_collection), 2) as average_delivery_time_from_collection,
-        round(avg(delivery_time_from_order), 2) as average_delivery_time_from_order,
 
         -- Count the number of days between today and the time interval indicates in the list 
         {%- for days in [30,90,360] %}
@@ -49,8 +47,6 @@ joined as (
         customers.phone_number,
         survey_responses.satisfaction_score,
         coalesce(customer_metrics.count_orders,0) as count_orders,
-        customer_metrics.average_delivery_time_from_collection,
-        customer_metrics.average_delivery_time_from_order,
 
         -- Select the needed columns for the aggregated order counts
         {%- for days in [30,90,360] %}
