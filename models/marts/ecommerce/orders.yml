@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: orders
+    description: >
+      Order fact table with delivery timing metrics. Includes calculated fields for delivery time from both order placement and pickup.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "coalesce(delivery_time_from_order >= delivery_time_from_collection, true)"
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "order_status != 'delivered' or delivery_time_from_order is not null"
+          config:
+            severity: warn
+                        
+    columns:
+      - name: order_id
+        description: Unique identifier for the order. Primary key.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: Foreign key to the customer who placed the order
+        data_tests:
+          - not_null
+
+      - name: ordered_at
+        description: Timestamp when the order was placed in UTC
+        data_tests:
+          - not_null
+        
+      - name: order_status
+        description: Current status of the order
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['cancelled', 'pending', 'ordered', 'delivered']
+              config:
+                severity: warn
+
+      - name: total_amount
+        description: Total order amount in dollars
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: delivery_time_from_order
+        description: Time in minutes from order placement to delivery. Null if not yet delivered.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "delivery_time_from_order is not null"
+
+      - name: delivery_time_from_collection
+        description: Time in minutes from pickup to delivery. Null if not yet delivered.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                where: "delivery_time_from_collection is not null"

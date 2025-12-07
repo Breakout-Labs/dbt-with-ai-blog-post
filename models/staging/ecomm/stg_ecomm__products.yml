@@ -1,0 +1,21 @@
+models:
+  - name: stg_ecomm__products
+    description: This model serves as a staging layer for product data.
+    columns:
+      - name: product_id
+        description: A unique identifier for each product.
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: The name of the product.
+      - name: category
+        description: The main category that the product belongs to.
+      - name: subcategory
+        description: The subcategory for more granular product classification.
+      - name: unit_price
+        description: The price per unit of the product.
+      - name: is_active
+        description: Boolean flag indicating whether the product is currently active and available.
+      - name: created_at
+        description: The timestamp when the product was created in the system.
