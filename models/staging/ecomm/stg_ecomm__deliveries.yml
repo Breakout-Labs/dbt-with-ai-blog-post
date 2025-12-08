@@ -1,0 +1,34 @@
+models:
+  - name: stg_ecomm__deliveries
+    description: This model serves as a staging layer for delivery data, containing information about order deliveries and their statuses.
+    columns:
+      - name: delivery_id
+        description: A unique identifier for each delivery record.
+        tests:
+          - not_null
+          - unique
+
+      - name: delivery_status
+        description: The current status of the delivery (e.g., delivered, picked_up, cancelled).
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['delivered', 'picked_up', 'cancelled']
+
+      - name: delivered_at
+        description: The timestamp indicating when the delivery was completed. Null if delivery is not yet completed.
+
+      - name: picked_up_at
+        description: The timestamp indicating when the delivery was picked up. Null if not yet picked up.
+
+      - name: _synced_at
+        description: The timestamp indicating when the delivery data was last synchronized from the source system.
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.expression_is_true:
+          name: delivery_timestamp_logic_check
+          arguments:
+            expression: "delivered_at IS NULL OR picked_up_at IS NULL OR delivered_at >= picked_up_at"

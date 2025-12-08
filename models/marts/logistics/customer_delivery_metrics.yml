@@ -1,0 +1,72 @@
+models:
+  - name: customer_delivery_metrics
+    description: >
+      This mart model aggregates delivery metrics at the customer level, providing insights into
+      delivery performance and customer delivery history. Useful for analyzing customer delivery
+      patterns and identifying potential delivery issues.
+    columns:
+      - name: customer_id
+        description: A unique identifier for each customer. This is the primary key for this model.
+        tests:
+          - not_null
+          - unique
+          
+      - name: total_delivery_count
+        description: The total number of deliveries associated with this customer across all statuses.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+
+      - name: delivered_delivery_count
+        description: The count of deliveries with status 'delivered' for this customer.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+
+      - name: picked_up_delivery_count
+        description: The count of deliveries with status 'picked_up' for this customer.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+
+      - name: cancelled_delivery_count
+        description: The count of deliveries with status 'cancelled' for this customer.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+
+      - name: last_delivery_timestamp
+        description: The timestamp of the most recent delivery completion for this customer. Null if customer has no completed deliveries.
+
+    tests:
+      - dbt_utils.expression_is_true:
+          name: delivery_count_components_sum_equals_total
+          arguments:
+            expression: "total_delivery_count = delivered_delivery_count + picked_up_delivery_count + cancelled_delivery_count"
+
+      - dbt_utils.expression_is_true:
+          name: delivered_count_less_than_or_equal_to_total
+          arguments:
+            expression: "delivered_delivery_count <= total_delivery_count"
+
+      - dbt_utils.expression_is_true:
+          name: picked_up_count_less_than_or_equal_to_total
+          arguments:
+            expression: "picked_up_delivery_count <= total_delivery_count"
+
+      - dbt_utils.expression_is_true:
+          name: cancelled_count_less_than_or_equal_to_total
+          arguments:
+            expression: "cancelled_delivery_count <= total_delivery_count"
