@@ -4,18 +4,16 @@
 
 - Use lowercase keywords.
 - Use trailing commas.
+- Indents should be four spaces.
+- Lines of SQL should be no longer than 80 characters.
 
 ## Model Organization
 
-Our models (typically) fit into two main categories:\
+Our models (typically) fit into three main categories:\
 
-- Staging &mdash; Contains models that clean and standardize data.        
-- Marts &mdash; Contains models which combine or heavily transform data. 
-
-Things to note:
-
-- There are different types of models that typically exist in each of the above categories. See Model Layers for more information.
-- Read How we structure our dbt projects for an example and more details around organization.
+- Staging: Contains models that clean and standardize data.
+- Intermediate: Contains more complex transformation logic that can't neatly fit into marts    
+- Marts: Contains business logic transformation and the final polished layer of data
 
 ## Model Layers
 
@@ -28,6 +26,7 @@ Things to note:
   Example: `stg_stripe__invoices.sql` vs. `stg_stripe__invoice.sql`
 
 - All models should use the naming convention `<type/dag_stage>_<source/topic>__<additional_context>`. See this article for more information.
+- Remember to also check the existing project model naming for examples.
 
   - Models in the **staging** folder should use the source's name as the `<source/topic>` and the entity name as the `additional_context`.
 
