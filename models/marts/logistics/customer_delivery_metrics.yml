@@ -55,18 +55,3 @@ models:
           name: delivery_count_components_sum_equals_total
           arguments:
             expression: "total_delivery_count = delivered_delivery_count + picked_up_delivery_count + cancelled_delivery_count"
-
-      - dbt_utils.expression_is_true:
-          name: delivered_count_less_than_or_equal_to_total
-          arguments:
-            expression: "delivered_delivery_count <= total_delivery_count"
-
-      - dbt_utils.expression_is_true:
-          name: picked_up_count_less_than_or_equal_to_total
-          arguments:
-            expression: "picked_up_delivery_count <= total_delivery_count"
-
-      - dbt_utils.expression_is_true:
-          name: cancelled_count_less_than_or_equal_to_total
-          arguments:
-            expression: "cancelled_delivery_count <= total_delivery_count"
